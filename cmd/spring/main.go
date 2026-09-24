@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 
 	"github.com/hababisha/sprint/internal/initializr"
 )
@@ -48,11 +49,31 @@ func main() {
 		return
 	}
 
-	err = initializr.Save(response, name+".zip")
+	zipPath := name + ".zip"
+
+	err = initializr.Save(response, zipPath)
 	if err != nil {
 		fmt.Println("Error saving the zip: ", err)
 		return
 	}
 	fmt.Println("project downloaded successfully")
 
+	// Todo -modify this to use go's archive to make it portable
+
+	cmd := exec.Command("unzip", zipPath)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err = cmd.Run()
+	if err != nil {
+		fmt.Println("Error extracting project:", err)
+		return
+	}
+
+	//delete the zip
+	err = os.Remove(zipPath)
+	if err != nil {
+		fmt.Println("Error removing ZIP:", err)
+		return
+	}
 }
