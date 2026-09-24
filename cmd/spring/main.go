@@ -60,7 +60,7 @@ func main() {
 
 	// Todo -modify this to use go's archive to make it portable
 
-	cmd := exec.Command("unzip", zipPath)
+	cmd := exec.Command("unzip", zipPath, "-d", name)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
