@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/hababisha/sprint/internal/initializr"
 )
 
 func main() {
@@ -26,5 +28,31 @@ func main() {
 	name := os.Args[3]
 
 	fmt.Printf("Creating Spring Boot project: %s\n", name)
+	config := initializr.Config{
+		Name:        name,
+		BootVersion: "4.1.1",
+		JavaVersion: "21",
+		Build:       "maven",
+		Packaging:   "jar",
+		Dependencies: []string{
+			"web",
+			"data-jpa",
+			"postgresql",
+		},
+	}
+
+	client := initializr.NewClient()
+	response, err := client.Generate(config)
+	if err != nil {
+		fmt.Println("error creating client: ", err)
+		return
+	}
+
+	err = initializr.Save(response, name+".zip")
+	if err != nil {
+		fmt.Println("Error saving the zip: ", err)
+		return
+	}
+	fmt.Println("project downloaded successfully")
 
 }
