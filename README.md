@@ -68,5 +68,14 @@ git clone https://github.com/hababisha/sprint.git
 or
 git clone git@github.com:hababisha/sprint.git
 ```
+## Build it and add it to your path
 
-This project is open source. See the repository for license information.
+```bash
+go build -o spring ./cmd/spring
+
+echo $PATH
+```
+copy the binary to one of the paths to make it global
+
+
+
